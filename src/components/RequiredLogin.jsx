@@ -1,12 +1,25 @@
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const RequireLogin = ({ children }) => {
   const token = Cookies.get("token");
+  try {
+    const data = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000); // waktu saat ini (detik)
 
-  if (!token) {
+    // token expured
+    if (currentTime > data.exp) {
+      Cookies.remove("token");
+      return <Navigate to={"/"} state={{ message: "you must login first" }} />;
+    }
+  } catch (error) {
+    console.log(error);
     return <Navigate to={"/"} state={{ message: "you must login first" }} />;
   }
+  // if (!token) {
+  //   return <Navigate to={"/"} state={{ message: "you must login first" }} />;
+  // }
 
   return children;
 };

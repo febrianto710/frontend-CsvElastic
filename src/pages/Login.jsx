@@ -3,12 +3,14 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import Loading from "../components/Loading";
 
 function Login() {
   const [npp, setNpp] = useState("");
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ function Login() {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const response = await axios.post("http://localhost:5000/login", {
         npp,
@@ -28,17 +30,22 @@ function Login() {
 
       if (response.status == 200) {
         Cookies.set("token", response.data.token, { expires: 1, secure: true });
+        // setIsLoading(false);
         navigate("/upload");
       }
+
+      setIsLoading(false);
     } catch (error) {
       setShowAlert(true);
 
       setAlertMessage(error?.response?.data?.error ?? error.message);
+      setIsLoading(false);
     }
   };
 
   return (
     <>
+      {isLoading ? <Loading /> : ""}
       <Navbar />
       <h1 className="text-center font-bold text-2xl mb-6">Login</h1>
 

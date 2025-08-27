@@ -1,11 +1,13 @@
 import { useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
+import Loading from "../components/Loading";
 
 function Upload() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertColor, setAlertColor] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleSpanClick = () => {
@@ -27,6 +29,7 @@ function Upload() {
   };
 
   const handleUpload = async () => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -44,15 +47,19 @@ function Upload() {
         setAlertMessage(res.data.message);
         setAlertColor("green");
       }
+
+      setIsLoading(false);
     } catch (err) {
       setShowAlert(true);
       setAlertMessage(err.response.data.error);
       setAlertColor("red");
+      setIsLoading(false);
     }
   };
 
   return (
     <>
+      {isLoading ? <Loading /> : ""}
       <Navbar />
       <div className="px-4 pb-6">
         <h1 className="text-center mb-12 font-bold text-2xl">
