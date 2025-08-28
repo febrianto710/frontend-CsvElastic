@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Loading from "../components/Loading";
+import { BASE_API_URL } from "../config/settings";
 
 function Login() {
   const [npp, setNpp] = useState("");
@@ -23,7 +24,7 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/login", {
+      const response = await axios.post(`${BASE_API_URL}/login`, {
         npp,
         password,
       });
@@ -49,9 +50,9 @@ function Login() {
       <Navbar />
       <h1 className="text-center font-bold text-2xl mb-6">Login</h1>
 
-      <div className="w-[360px] sm:w-[600px]  mx-auto ">
+      <div className="w-[360px] sm:w-[500px]  mx-auto mb-12">
         {showAlert ? (
-          <div className="w-full rounded-md p-4 bg-red-400 shadow-md mb-6 text-white">
+          <div className="w-full rounded-md p-4 bg-red-400 shadow-md mb-6 text-white font-bold">
             {alertMessage}
           </div>
         ) : (
@@ -90,7 +91,7 @@ function Login() {
 
             <div className="mb-4">
               <button
-                className="w-full rounded-2xl px-6 py-4 bg-sky-400 font-bold hover:cursor-pointer hover:bg-sky-500"
+                className="w-full rounded-2xl px-6 py-4 bg-sky-600 font-bold hover:cursor-pointer hover:bg-sky-700 text-white"
                 type="submit"
               >
                 Login

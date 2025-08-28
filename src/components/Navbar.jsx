@@ -25,7 +25,12 @@ export default function Navbar() {
 
       {token ? (
         <div className="flex items-center ms-2">
-          <span>Hello, {dataToken?.nama}</span>
+          <span
+            className="truncate max-w-[120px] sm:max-w-none"
+            title={dataToken?.name}
+          >
+            Hello, {dataToken?.name}
+          </span>
           <button
             className="ms-4 py-2 px-8 bg-red-400 rounded-md shadow-md font-bold hover:cursor-pointer hover:bg-red-500"
             onClick={handleLogout}

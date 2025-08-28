@@ -1,7 +1,11 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import Loading from "../components/Loading";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import { BASE_API_URL } from "../config/settings";
 
 function Upload() {
   const [showAlert, setShowAlert] = useState(false);
@@ -9,6 +13,43 @@ function Upload() {
   const [alertColor, setAlertColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  const navigate = useNavigate();
+  const timerRef = useRef(null);
+
+  // cek setiap 2 menit sekali apakah token sudah expired atau belum
+  useEffect(() => {
+    const checkToken = () => {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      try {
+        const decoded = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (decoded.exp && decoded.exp <= currentTime) {
+          // Token expired
+          Cookies.remove("token");
+          clearTimeout(timerRef.current);
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        Cookies.remove("token");
+        clearTimeout(timerRef.current);
+        navigate("/");
+      }
+    };
+
+    // Jalankan pengecekan pertama
+    checkToken();
+
+    // Set timeout untuk cek setiap 2 menit (120000 ms)
+    timerRef.current = setInterval(checkToken, 120000);
+
+    // Bersihkan interval saat komponen unmount
+    return () => clearInterval(timerRef.current);
+  }, [navigate]);
 
   const handleSpanClick = () => {
     fileInputRef.current?.click();
@@ -20,7 +61,7 @@ function Upload() {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === "text/csv") {
-      console.log(selectedFile);
+      // console.log(selectedFile);
       setFile(selectedFile);
       setStatus(selectedFile.name);
     } else {
@@ -34,13 +75,13 @@ function Upload() {
     formData.append("file", file);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/upload-csv",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const token = Cookies.get("token");
+      const res = await axios.post(`${BASE_API_URL}/upload-csv`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (res.status == 200) {
         setShowAlert(true);
@@ -51,7 +92,7 @@ function Upload() {
       setIsLoading(false);
     } catch (err) {
       setShowAlert(true);
-      setAlertMessage(err.response.data.error);
+      setAlertMessage(err?.response?.data?.error ?? err.message);
       setAlertColor("red");
       setIsLoading(false);
     }
@@ -69,7 +110,7 @@ function Upload() {
         <div className="mx-auto w-[322px]  ">
           {showAlert ? (
             <div
-              className={`w-full rounded-md p-4 bg-${alertColor}-400 shadow-md mb-6 text-white`}
+              className={`w-full rounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold`}
             >
               {alertMessage}
             </div>

@@ -11,7 +11,9 @@ const RequireLogin = ({ children }) => {
     // token expured
     if (currentTime > data.exp) {
       Cookies.remove("token");
-      return <Navigate to={"/"} state={{ message: "you must login first" }} />;
+      return (
+        <Navigate to={"/"} state={{ message: "Your token has been expired" }} />
+      );
     }
   } catch (error) {
     console.log(error);
