@@ -106,7 +106,10 @@ function Upload() {
         <h1 className="text-center mb-12 font-bold text-2xl">
           Upload File CSV
         </h1>
-
+        <div
+          className="hidden bg-red-600 bg-green-600"
+          id="initial-color-tailwindcss"
+        ></div>
         <div className="mx-auto w-[322px]  ">
           {showAlert ? (
             <div
