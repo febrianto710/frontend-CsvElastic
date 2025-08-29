@@ -98,6 +98,10 @@ function Upload() {
     }
   };
 
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
+
   return (
     <>
       {isLoading ? <Loading /> : ""}
@@ -110,43 +114,51 @@ function Upload() {
           className="hidden bg-red-600 bg-green-600"
           id="initial-color-tailwindcss"
         ></div>
-        <div className="mx-auto w-[322px]  ">
+        <div className="mx-auto w-[400px]">
           {showAlert ? (
             <div
-              className={`w-full rounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold`}
+              className={`w-[323px] mx-auto rounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold flex justify-between`}
             >
-              {alertMessage}
+              <span>{alertMessage}</span>
+              <button
+                className="text-xl hover:cursor-pointer hover:text-slate-200"
+                onClick={handleCloseAlert}
+              >
+                X
+              </button>
             </div>
           ) : (
             ""
           )}
-          <div className="flex w-fit">
-            <div className="relative">
-              <input
-                ref={fileInputRef}
-                type="file"
-                className=" py-3 w-[200px] bg-slate-200 text-transparent rounded-md  hover:cursor-pointer hover:bg-slate-300"
-                accept=".csv"
-                onChange={handleFileChange}
-              />
-              <span
-                onClick={handleSpanClick}
-                className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 hover:cursor-pointer"
-              >
-                Pilih File
-              </span>
+          <div className="flex justify-center items-start">
+            <div>
+              <div className="relative">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className=" py-3 w-[200px] bg-slate-200 text-transparent rounded-md  hover:cursor-pointer hover:bg-slate-300"
+                  accept=".csv"
+                  onChange={handleFileChange}
+                />
+                <span
+                  onClick={handleSpanClick}
+                  className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 hover:cursor-pointer"
+                >
+                  Pilih File
+                </span>
+              </div>
+              <p className="w-[200px] truncate" title={status}>
+                {status}
+              </p>
             </div>
 
             <button
-              className="bg-green-400 ms-4 px-8 font-bold rounded-md hover:cursor-pointer hover:bg-green-500"
+              className="bg-green-400 py-3 items-center ms-4 px-8 font-bold rounded-md hover:cursor-pointer hover:bg-green-500"
               onClick={handleUpload}
             >
               Send
             </button>
           </div>
-          <p className="w-[200px] truncate" title={status}>
-            {status}
-          </p>
         </div>
       </div>
     </>
