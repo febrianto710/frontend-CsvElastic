@@ -5,13 +5,18 @@ import Loading from "../components/Loading";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { BASE_API_URL } from "../config/settings";
+import { BASE_API_URL, INDEX_TYPES } from "../config/settings";
+import Dropdown from "../components/Dropdown";
 
 function Upload() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertColor, setAlertColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const [status, setStatus] = useState("Belum ada file terpilih");
+  const [indexType, setIndexType] = useState(INDEX_TYPES[0]["value"]);
+
   const fileInputRef = useRef(null);
 
   const navigate = useNavigate();
@@ -55,9 +60,6 @@ function Upload() {
     fileInputRef.current?.click();
   };
 
-  const [file, setFile] = useState(null);
-  const [status, setStatus] = useState("Belum ada file terpilih");
-
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === "text/csv") {
@@ -73,6 +75,7 @@ function Upload() {
     setIsLoading(true);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("index_type", indexType);
 
     try {
       const token = Cookies.get("token");
@@ -102,10 +105,15 @@ function Upload() {
     setShowAlert(false);
   };
 
+  const handleSelectIndexType = (event) => {
+    setIndexType(event.target.value);
+  };
+
   return (
     <>
       {isLoading ? <Loading /> : ""}
       <Navbar />
+
       <div className="px-4 pb-6">
         <h1 className="text-center mb-12 font-bold text-2xl">
           Upload File CSV
@@ -114,10 +122,10 @@ function Upload() {
           className="hidden bg-red-600 bg-green-600"
           id="initial-color-tailwindcss"
         ></div>
-        <div className="mx-auto w-[400px]">
+        <div className="mx-auto w-fit">
           {showAlert ? (
             <div
-              className={`w-[323px] mx-auto rounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold flex justify-between`}
+              className={`w-[323px] mx-auto asdsaddrounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold flex justify-between rounded-md`}
             >
               <span>{alertMessage}</span>
               <button
@@ -130,7 +138,13 @@ function Upload() {
           ) : (
             ""
           )}
-          <div className="flex justify-center items-start">
+
+          <Dropdown
+            options={INDEX_TYPES}
+            selectedValue={indexType}
+            handleSelect={handleSelectIndexType}
+          />
+          <div className="flex justify-center items-start ">
             <div>
               <div className="relative">
                 <input

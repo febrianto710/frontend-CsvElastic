@@ -60,7 +60,7 @@ function Login() {
         )}
 
         <form onSubmit={handleSubmitForm}>
-          <div className="p-6 border-2 border-slate-200 rounded-xl shadow-md">
+          <div className="p-6 border-2 border-slate-200 rounded-xl shadow-lg">
             <div className="mb-6">
               <label htmlFor="NPP" className="block mb-3 font-bold">
                 NPP
