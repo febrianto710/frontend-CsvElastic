@@ -21,18 +21,20 @@ export default function Navbar() {
 
   return (
     <div className="px-4 h-[80px] bg-slate-300 py-6 mb-12 flex justify-between items-center">
-      <span className="font-bold text-2xl poppins-regular">CsvElastic</span>
+      <span className="text-xl font-bold sm:text-2xl poppins-regular">
+        CsvElastic
+      </span>
 
       {token ? (
         <div className="flex items-center ms-2">
           <span
-            className="truncate max-w-[120px] sm:max-w-none"
+            className="hidden sm:block truncate max-w-[120px] sm:max-w-none"
             title={dataToken?.name}
           >
             Hello, {dataToken?.name}
           </span>
           <button
-            className="ms-4 py-2 px-8 bg-red-400 rounded-md shadow-md font-bold hover:cursor-pointer hover:bg-red-500"
+            className="text-sm px-6 ms-4 py-2 sm:px-8 bg-red-400 rounded-md shadow-md font-bold hover:cursor-pointer hover:bg-red-500"
             onClick={handleLogout}
           >
             Logout
