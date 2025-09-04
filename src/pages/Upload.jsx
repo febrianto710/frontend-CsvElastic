@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { BASE_API_URL, INDEX_TYPES } from "../config/settings";
 import Dropdown from "../components/Dropdown";
+import FileInput from "../components/FileInput";
 
 function Upload() {
   const [showAlert, setShowAlert] = useState(false);
@@ -14,10 +15,7 @@ function Upload() {
   const [alertColor, setAlertColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
-  const [status, setStatus] = useState("Belum ada file terpilih");
   const [indexType, setIndexType] = useState(INDEX_TYPES[0]["value"]);
-
-  const fileInputRef = useRef(null);
 
   const navigate = useNavigate();
   const timerRef = useRef(null);
@@ -56,18 +54,16 @@ function Upload() {
     return () => clearInterval(timerRef.current);
   }, [navigate]);
 
-  const handleSpanClick = () => {
-    fileInputRef.current?.click();
-  };
-
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === "text/csv") {
       // console.log(selectedFile);
       setFile(selectedFile);
-      setStatus(selectedFile.name);
+      // setStatus(selectedFile.name);
     } else {
-      setStatus("Pilih file CSV yang valid!");
+      setShowAlert(true);
+      setAlertMessage("File harus bertipe csv");
+      setAlertColor("red");
     }
   };
 
@@ -114,7 +110,7 @@ function Upload() {
       {isLoading ? <Loading /> : ""}
       <Navbar />
 
-      <div className="px-4 pb-6">
+      <div className="px-4 pb-24">
         <h1 className="text-center mb-12 font-bold text-2xl">
           Upload File CSV
         </h1>
@@ -122,10 +118,11 @@ function Upload() {
           className="hidden bg-red-600 bg-green-600"
           id="initial-color-tailwindcss"
         ></div>
-        <div className="mx-auto w-fit">
+
+        <div className="mx-auto sm:w-[500px] ">
           {showAlert ? (
             <div
-              className={`w-[323px] mx-auto asdsaddrounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold flex justify-between rounded-md`}
+              className={`rounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold flex justify-between rounded-md`}
             >
               <span>{alertMessage}</span>
               <button
@@ -139,35 +136,25 @@ function Upload() {
             ""
           )}
 
-          <Dropdown
-            options={INDEX_TYPES}
-            selectedValue={indexType}
-            handleSelect={handleSelectIndexType}
-          />
-          <div className="flex justify-center items-start ">
-            <div>
-              <div className="relative">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className=" py-3 w-[200px] bg-slate-200 text-transparent rounded-md  hover:cursor-pointer hover:bg-slate-300"
-                  accept=".csv"
-                  onChange={handleFileChange}
-                />
-                <span
-                  onClick={handleSpanClick}
-                  className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 hover:cursor-pointer"
-                >
-                  Pilih File
-                </span>
-              </div>
-              <p className="w-[200px] truncate" title={status}>
-                {status}
-              </p>
+          <div className="border-2 border-slate-200 shadow-lg rounded-lg p-6">
+            <div className="mb-4">
+              <label className="mb-3 block">Jenis Data</label>
+              <Dropdown
+                options={INDEX_TYPES}
+                selectedValue={indexType}
+                handleSelect={handleSelectIndexType}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="" className="mb-3 block">
+                File
+              </label>
+              <FileInput handleFileChange={handleFileChange} />
             </div>
 
             <button
-              className="bg-green-400 py-3 items-center ms-4 px-8 font-bold rounded-md hover:cursor-pointer hover:bg-green-500"
+              className="bg-green-500 mt-6 mb-4 py-3 items-center px-8 font-bold rounded-md hover:cursor-pointer hover:bg-green-600 w-full"
               onClick={handleUpload}
             >
               Send

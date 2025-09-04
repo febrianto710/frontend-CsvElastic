@@ -48,6 +48,7 @@ function Login() {
     <>
       {isLoading ? <Loading /> : ""}
       <Navbar />
+
       <h1 className="text-center font-bold text-2xl mb-6">Login</h1>
 
       <div className="w-[360px] sm:w-[500px]  mx-auto mb-12">
