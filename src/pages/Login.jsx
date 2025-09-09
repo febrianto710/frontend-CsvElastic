@@ -30,7 +30,7 @@ function Login() {
       });
 
       if (response.status == 200) {
-        Cookies.set("token", response.data.token, { expires: 1, secure: true });
+        Cookies.set("token", response.data.token, { expires: 1 });
         // setIsLoading(false);
         navigate("/upload");
       }
