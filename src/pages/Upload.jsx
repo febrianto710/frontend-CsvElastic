@@ -136,7 +136,7 @@ function Upload() {
             ""
           )}
 
-          <div className="border-2 border-slate-200 shadow-lg rounded-lg p-6">
+          <div className="border-2 border-slate-200 shadow-lg rounded-lg p-6 bg-sky-100">
             <div className="mb-4">
               <label className="mb-3 block">Jenis Data</label>
               <Dropdown

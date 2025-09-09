@@ -16,7 +16,7 @@ export default function FileInput({ handleFileChange }) {
 
   return (
     <div
-      className="flex items-center border rounded-lg p-2 gap-3 "
+      className="flex items-center border rounded-lg p-2 gap-3 bg-white"
       // style={{ width: "400px" }}
     >
       <label className="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 whitespace-nowrap">
@@ -28,7 +28,9 @@ export default function FileInput({ handleFileChange }) {
           accept=".csv"
         />
       </label>
-      <span className="text-sm text-gray-700 truncate">{fileName}</span>
+      <span className="text-sm text-gray-700 truncate" title={fileName}>
+        {fileName}
+      </span>
     </div>
   );
 }
