@@ -8,7 +8,7 @@ const RequireLogin = ({ children }) => {
     const data = jwtDecode(token);
     const currentTime = Math.floor(Date.now() / 1000); // waktu saat ini (detik)
 
-    // token expured
+    // token expired
     if (currentTime > data.exp) {
       Cookies.remove("token");
       return (
