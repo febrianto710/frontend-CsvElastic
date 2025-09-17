@@ -8,6 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { BASE_API_URL, INDEX_TYPES } from "../config/settings";
 import Dropdown from "../components/Dropdown";
 import FileInput from "../components/FileInput";
+import * as aq from "arquero";
+import LoadingProgressBar from "../components/LoadingProgressBar";
+
+function cleanQuotes(line) {
+  let cleaned = line.trim();
+  if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+    cleaned = cleaned.slice(1, -1); // buang kutip awal & akhir
+  }
+  let text_without_quote = cleaned.replace(/'/g, "");
+  return text_without_quote;
+}
 
 function Upload() {
   const [showAlert, setShowAlert] = useState(false);
@@ -16,6 +27,7 @@ function Upload() {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [indexType, setIndexType] = useState(INDEX_TYPES[0]["value"]);
+  const [progress, setProgress] = useState(0);
 
   const navigate = useNavigate();
   const timerRef = useRef(null);
@@ -64,30 +76,89 @@ function Upload() {
       setShowAlert(true);
       setAlertMessage("File harus bertipe csv");
       setAlertColor("red");
+      setFile(null);
     }
   };
 
   const handleUpload = async () => {
-    setIsLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("index_type", indexType);
-
     try {
-      const token = Cookies.get("token");
-      const res = await axios.post(`${BASE_API_URL}/upload-csv`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.status == 200) {
+      if (!file) {
         setShowAlert(true);
-        setAlertMessage(res.data.message);
-        setAlertColor("green");
+        setAlertMessage("File belum diupload");
+        setAlertColor("red");
+        return;
+      }
+      setIsLoading(true);
+      setProgress(0);
+      let delimiter = ",";
+      // Baca file CSV jadi string
+      const text = await file.text();
+      if (text.includes(";")) {
+        console.log("delimiter = ;");
+        delimiter = ";";
+      } else if (text.includes(",")) {
+        delimiter = ",";
+      } else {
+        setShowAlert(true);
+        setAlertMessage("delimiter csv tidak diketahui");
+        setAlertColor("red");
+        return;
       }
 
+      // Pecah per baris
+      const lines = text.split("\n");
+
+      // Bersihkan kutip awal & akhir
+      const cleanedLines = lines.map((line) => cleanQuotes(line));
+
+      // Gabungkan lagi jadi CSV string bersih
+      const cleanedText = cleanedLines.join("\n");
+      // Parse CSV pakai Arquero
+      const df = aq.fromCSV(cleanedText, { delimiter });
+      const df_cleaned = df.filter(
+        aq.escape((row) =>
+          Object.values(row).some((v) => String(v ?? "").trim() !== "")
+        )
+      );
+      const data = df_cleaned.objects();
+
+      // Tentukan batch size
+      const batchSize = 10000;
+      const total = data.length;
+      let uploaded = 0;
+
+      const token = Cookies.get("token");
+      for (let i = 0; i < total; i += batchSize) {
+        const batch = data.slice(i, i + batchSize);
+
+        // Simulasi proses upload dengan sleep 10 detik
+        console.log(`Simulasi upload batch ${i / batchSize + 1}`);
+
+        let json_data = {
+          index_type: indexType,
+          data: batch,
+        };
+        const res = await axios.post(`${BASE_API_URL}/upload-csv`, json_data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // if (res.status == 200) {
+        //   setShowAlert(true);
+        //   setAlertMessage(res.data.message);
+        //   setAlertColor("green");
+        // }
+
+        console.log(res);
+        // Update progress
+        uploaded += batch.length;
+        setProgress(Math.round((uploaded / total) * 100));
+      }
+      setShowAlert(true);
+      setAlertMessage("Data berhasil dikirim ke Elastic");
+      setAlertColor("green");
       setIsLoading(false);
     } catch (err) {
       setShowAlert(true);
@@ -107,7 +178,7 @@ function Upload() {
 
   return (
     <>
-      {isLoading ? <Loading /> : ""}
+      {isLoading ? <LoadingProgressBar percent_number={progress} /> : ""}
       <Navbar />
 
       <div className="px-4 pb-24">
