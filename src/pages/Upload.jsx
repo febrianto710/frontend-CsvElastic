@@ -138,6 +138,7 @@ function Upload() {
           index_type: indexType,
           data: batch,
         };
+
         const res = await axios.post(`${BASE_API_URL}/upload-csv`, json_data, {
           headers: {
             "Content-Type": "application/json",
