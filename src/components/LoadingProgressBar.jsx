@@ -7,6 +7,7 @@ export default function LoadingProgressBar({ percent_number }) {
       aria-busy="true"
     >
       <div className="w-full p-4 max-w-md mx-auto">
+        <p className="text-center mb-3">Harap Tunggu...</p>
         <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
           <div
             className="bg-green-500 h-6 text-white text-xs flex items-center justify-center transition-all duration-300"
