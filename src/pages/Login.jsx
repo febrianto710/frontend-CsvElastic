@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
@@ -12,7 +12,9 @@ function Login() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
   const navigate = useNavigate();
 
   const token = Cookies.get("token");

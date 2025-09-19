@@ -28,7 +28,9 @@ function Upload() {
   const [file, setFile] = useState(null);
   const [indexType, setIndexType] = useState(INDEX_TYPES[0]["value"]);
   // const [progress, setProgress] = useState(0);
-
+  useEffect(() => {
+    document.title = "Upload File";
+  }, []);
   const navigate = useNavigate();
   const timerRef = useRef(null);
 
