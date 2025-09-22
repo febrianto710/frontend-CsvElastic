@@ -20,6 +20,10 @@ import FileInput from "../components/FileInput";
 //   return text_without_quote;
 // }
 
+function formatTime(date) {
+  return date.toTimeString().split(" ")[0]; // ambil HH:MM:SS
+}
+
 function Upload() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -92,12 +96,22 @@ function Upload() {
 
     try {
       const token = Cookies.get("token");
+
+      const start = new Date();
+      console.log("Start:", formatTime(start));
+
       const res = await axios.post(`${BASE_API_URL}/upload-csv`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
+
+      const end = new Date();
+      console.log("End:", formatTime(end));
+
+      const durationSec = Math.round((end - start) / 1000);
+      console.log(`Selesai dalam detik: ${durationSec} detik`);
 
       if (res.status == 200) {
         setShowAlert(true);

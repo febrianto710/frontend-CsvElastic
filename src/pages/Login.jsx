@@ -26,7 +26,7 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`${BASE_API_URL}/login`, {
+      const response = await axios.post(`${BASE_API_URL}/auth/login`, {
         npp,
         password,
       });
