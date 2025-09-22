@@ -5,7 +5,11 @@ import Loading from "../components/Loading";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { BASE_API_URL, INDEX_TYPES } from "../config/settings";
+import {
+  BASE_API_URL,
+  INDEX_TYPES,
+  REQUIRED_COLUMNS,
+} from "../config/settings";
 import Dropdown from "../components/Dropdown";
 import FileInput from "../components/FileInput";
 // import * as aq from "arquero";
@@ -177,11 +181,37 @@ function Upload() {
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-6">
               <label htmlFor="" className="mb-3 block">
                 File
               </label>
               <FileInput handleFileChange={handleFileChange} />
+            </div>
+
+            <div className="mb-4">
+              <label className="font-bold block mb-4 text-red-400">
+                COLUMN REQUIRED
+              </label>
+              <ul
+                role="list"
+                className="flex flex-wrap items-start gap-x-4 gap-y-2 p-0 m-0"
+                aria-label="Daftar fitur"
+              >
+                {REQUIRED_COLUMNS[indexType].map((it, idx) => (
+                  <li key={idx} className="flex items-center mr-0">
+                    {/* bullet custom */}
+                    <span
+                      className="inline-block  min-w-[0.75rem] text-[0.9rem] leading-none"
+                      aria-hidden="true"
+                    >
+                      •
+                    </span>
+
+                    {/* konten item */}
+                    <span className="text-sm">{it}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <button
