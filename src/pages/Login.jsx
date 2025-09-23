@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import Loading from "../components/Loading";
 import { BASE_API_URL } from "../config/settings";
@@ -102,6 +102,16 @@ function Login() {
             </div>
           </div>
         </form>
+
+        <p className="my-8">
+          Don't have an account yet?{" "}
+          <Link
+            to={"/register"}
+            className="text-blue-500 hover:cursor-pointer hover:underline"
+          >
+            Register
+          </Link>
+        </p>
       </div>
     </>
   );

@@ -190,7 +190,7 @@ function Upload() {
 
             <div className="mb-4">
               <label className="font-bold block mb-4 text-red-400">
-                COLUMN REQUIRED
+                REQUIRED COLUMNS
               </label>
               <ul
                 role="list"

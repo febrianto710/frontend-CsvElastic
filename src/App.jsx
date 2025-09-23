@@ -3,12 +3,14 @@ import Login from "./pages/Login.jsx";
 import Upload from "./pages/Upload.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import RequireLogin from "./components/RequiredLogin.jsx";
+import Register from "./pages/Register.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="upload"
