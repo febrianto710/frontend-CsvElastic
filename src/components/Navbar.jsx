@@ -29,9 +29,9 @@ export default function Navbar() {
         <div className="flex items-center ms-2">
           <span
             className="hidden sm:block truncate max-w-[120px] sm:max-w-none"
-            title={dataToken?.name}
+            title={dataToken?.username}
           >
-            Hello, {dataToken?.name}
+            Hello, {dataToken?.username}
           </span>
           <button
             className="text-sm px-6 ms-4 py-2 sm:px-8 bg-red-400 rounded-md shadow-md font-bold hover:cursor-pointer hover:bg-red-500"

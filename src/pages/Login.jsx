@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import { useNavigate, Navigate, Link } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Loading from "../components/Loading";
 import { BASE_API_URL } from "../config/settings";
 
 function Login() {
-  const [npp, setNpp] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -27,7 +27,7 @@ function Login() {
     setIsLoading(true);
     try {
       const response = await axios.post(`${BASE_API_URL}/auth/login`, {
-        npp,
+        username,
         password,
       });
 
@@ -65,24 +65,26 @@ function Login() {
         <form onSubmit={handleSubmitForm}>
           <div className="p-6 border-2 border-slate-200 rounded-xl shadow-lg">
             <div className="mb-6">
-              <label htmlFor="NPP" className="block mb-3 font-bold">
-                NPP
+              <label htmlFor="Username" className="block mb-3 font-bold">
+                Username
               </label>
               <input
+                id="Username"
                 type="text"
                 className="border-2 border-slate-500 px-6 py-4 rounded-2xl w-full"
-                placeholder="Masukan NPP..."
-                value={npp}
-                onChange={(e) => setNpp(e.target.value)}
+                placeholder="Masukan Username..."
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
 
             <div className="mb-10">
-              <label htmlFor="NPP" className="block mb-3 font-bold">
+              <label htmlFor="password" className="block mb-3 font-bold">
                 Password
               </label>
               <input
+                id="password"
                 type="password"
                 className="border-2 border-slate-500 px-6 py-4 rounded-2xl w-full"
                 placeholder="Masukan Password..."
@@ -102,16 +104,6 @@ function Login() {
             </div>
           </div>
         </form>
-
-        <p className="my-8">
-          Don't have an account yet ?{" "}
-          <Link
-            to={"/register"}
-            className="text-blue-500 hover:cursor-pointer hover:underline"
-          >
-            Register
-          </Link>
-        </p>
       </div>
     </>
   );
