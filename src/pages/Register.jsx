@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { BASE_API_URL } from "../config/settings";
 
 export default function Register() {
   const [fullName, setFullName] = useState("");
@@ -17,7 +19,7 @@ export default function Register() {
     document.title = "Register";
   }, []);
 
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
     const errors = {};
     if (fullName.length < 3) {
@@ -32,8 +34,8 @@ export default function Register() {
       errors.email = "Email format is not valid";
     }
 
-    if (password.length < 6) {
-      errors.password = "Password field must be more than 5 characters";
+    if (password.length <= 6) {
+      errors.password = "Password field must be more than 6 characters";
     }
 
     if (confirmPassword != password) {
@@ -43,6 +45,35 @@ export default function Register() {
     if (Object.keys(errors).length === 0) {
       setErrorsForm({});
       console.log("valid");
+
+      const formData = {
+        name: fullName,
+        npp,
+        email,
+        password,
+      };
+      console.log(formData);
+      setIsLoading(true);
+      try {
+        const response = await axios.post(
+          `${BASE_API_URL}/auth/register`,
+          formData
+        );
+        console.log(response);
+        // if (response.status == 200) {
+        //   Cookies.set("token", response.data.token, { expires: 1 });
+        //   // setIsLoading(false);
+        //   navigate("/upload");
+        // }
+
+        setIsLoading(false);
+      } catch (error) {
+        setShowAlert(true);
+        console.log("error ----------");
+        console.log(error);
+        setAlertMessage(error?.response?.data?.error ?? error.message);
+        setIsLoading(false);
+      }
     } else {
       console.log(errors);
       setErrorsForm(errors);
@@ -176,7 +207,7 @@ export default function Register() {
         </form>
 
         <p className="my-8">
-          Already have an account?{" "}
+          Already have an account ?{" "}
           <Link
             to={"/"}
             className="text-blue-500 hover:cursor-pointer hover:underline"

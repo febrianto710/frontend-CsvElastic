@@ -104,7 +104,7 @@ function Login() {
         </form>
 
         <p className="my-8">
-          Don't have an account yet?{" "}
+          Don't have an account yet ?{" "}
           <Link
             to={"/register"}
             className="text-blue-500 hover:cursor-pointer hover:underline"
