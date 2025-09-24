@@ -94,6 +94,7 @@ function Upload() {
 
   const handleUpload = async () => {
     setIsLoading(true);
+    setShowAlert(false);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("index_type", indexType);
