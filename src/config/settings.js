@@ -30,19 +30,12 @@ export const REQUIRED_COLUMNS = {
     "UNIT_BESARAN",
     "UNIT3",
   ],
-  "web portal": [
-    "@timestamp",
-    "CHANNEL_ID",
-    "CHANNEL_NAME",
-    "IP ADDRESS",
-    "NIK",
-    "NOMINAL",
-    "SERVICE",
-    "STATUS",
-    "TANGGAL",
-    "TRX_ID",
-    "UNIT",
-    "USERNAME",
-  ],
+  "web portal": ["IP ADDRESS", "NIK", "STATUS", "TANGGAL", "USERNAME"],
   "quota dukcapil": ["QUOTA", "SERVICE", "TANGGAL", "UNIT"],
+};
+
+export const EXAMPLES_CSV_URL = {
+  employee: "/examples/data_pegawai.csv",
+  "web portal": "/examples/web_portal.csv",
+  "quota dukcapil": "/examples/quota_dukcapil.csv",
 };

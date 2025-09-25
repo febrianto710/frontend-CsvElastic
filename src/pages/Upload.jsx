@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import {
   BASE_API_URL,
+  EXAMPLES_CSV_URL,
   INDEX_TYPES,
   REQUIRED_COLUMNS,
 } from "../config/settings";
@@ -213,6 +214,15 @@ function Upload() {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className="mb-6">
+              <a
+                href={`${EXAMPLES_CSV_URL[indexType]}`}
+                className="text-blue-400 underline"
+              >
+                Download Example
+              </a>
             </div>
 
             <button
