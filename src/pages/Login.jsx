@@ -25,6 +25,7 @@ function Login() {
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setShowAlert(false);
     try {
       const response = await axios.post(`${BASE_API_URL}/auth/login`, {
         username,
@@ -55,7 +56,7 @@ function Login() {
 
       <div className="w-[360px] sm:w-[500px]  mx-auto mb-12">
         {showAlert ? (
-          <div className="w-full rounded-md p-4 bg-red-400 shadow-md mb-6 text-white font-bold">
+          <div className="w-full rounded-md p-4 bg-red-200 shadow-md mb-6 text-red-600 font-bold border-2 border-red-400">
             {alertMessage}
           </div>
         ) : (

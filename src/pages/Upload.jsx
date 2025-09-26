@@ -149,21 +149,21 @@ function Upload() {
 
       <div className="px-4 pb-24">
         <h1 className="text-center mb-12 font-bold text-2xl">
-          Upload File CSV
+          Web Portal Dukcapil
         </h1>
         <div
-          className="hidden bg-red-600 bg-green-600"
+          className="hidden bg-red-200 bg-green-200 text-red-600 text-green-600 border-red-600 border-green-600"
           id="initial-color-tailwindcss"
         ></div>
 
         <div className="mx-auto sm:w-[500px] ">
           {showAlert ? (
             <div
-              className={`rounded-md p-4 bg-${alertColor}-600 shadow-md mb-6 text-white font-bold flex justify-between rounded-md`}
+              className={`rounded-md p-4 bg-${alertColor}-200 shadow-md mb-6 text-${alertColor}-600 border-2 border-${alertColor}-600 font-bold flex justify-between rounded-md`}
             >
               <span>{alertMessage}</span>
               <button
-                className="text-xl hover:cursor-pointer hover:text-slate-200"
+                className="text-xl hover:cursor-pointer hover:text-slate-600"
                 onClick={handleCloseAlert}
               >
                 X
@@ -185,7 +185,7 @@ function Upload() {
 
             <div className="mb-6">
               <label htmlFor="" className="mb-3 block">
-                File
+                File CSV (.csv)
               </label>
               <FileInput handleFileChange={handleFileChange} />
             </div>
