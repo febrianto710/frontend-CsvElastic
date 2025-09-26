@@ -5,6 +5,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Loading from "../components/Loading";
 import { BASE_API_URL } from "../config/settings";
+import Alert from "../components/Alert";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -47,6 +48,10 @@ function Login() {
     }
   };
 
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
+
   return (
     <>
       {isLoading ? <Loading /> : ""}
@@ -56,9 +61,11 @@ function Login() {
 
       <div className="w-[360px] sm:w-[500px]  mx-auto mb-12">
         {showAlert ? (
-          <div className="w-full rounded-md p-4 bg-red-200 shadow-md mb-6 text-red-600 font-bold border-2 border-red-400">
-            {alertMessage}
-          </div>
+          <Alert
+            color="red"
+            message={alertMessage}
+            handleCloseAlert={handleCloseAlert}
+          />
         ) : (
           ""
         )}

@@ -13,6 +13,7 @@ import {
 } from "../config/settings";
 import Dropdown from "../components/Dropdown";
 import FileInput from "../components/FileInput";
+import Alert from "../components/Alert";
 // import * as aq from "arquero";
 // import LoadingProgressBar from "../components/LoadingProgressBar";
 
@@ -158,17 +159,11 @@ function Upload() {
 
         <div className="mx-auto sm:w-[500px] ">
           {showAlert ? (
-            <div
-              className={`rounded-md p-4 bg-${alertColor}-200 shadow-md mb-6 text-${alertColor}-600 border-2 border-${alertColor}-600 font-bold flex justify-between rounded-md`}
-            >
-              <span>{alertMessage}</span>
-              <button
-                className="text-xl hover:cursor-pointer hover:text-slate-600"
-                onClick={handleCloseAlert}
-              >
-                X
-              </button>
-            </div>
+            <Alert
+              color={alertColor}
+              message={alertMessage}
+              handleCloseAlert={handleCloseAlert}
+            />
           ) : (
             ""
           )}
