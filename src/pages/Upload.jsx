@@ -79,7 +79,7 @@ function Upload() {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    const extension = selectedFile.name.split(".").pop();
+    const extension = selectedFile?.name.split(".").pop();
 
     if (selectedFile && extension === "csv") {
       // console.log(selectedFile);
